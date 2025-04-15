@@ -1,0 +1,877 @@
+# Overview
+Matlinks is a modern gym management platform specifically designed for Brazilian Jiu-Jitsu (BJJ) academies. The platform addresses the unique needs of BJJ gym owners, instructors, and students by providing comprehensive tools for membership management, attendance tracking, billing, scheduling, and analytics.
+
+Unlike generic gym management software, Matlinks focuses exclusively on the BJJ ecosystem, offering features tailored to the belt progression system, specific class types, and the community-oriented nature of BJJ training. This specialized approach delivers greater value to BJJ academies compared to one-size-fits-all solutions.
+
+The platform will be accessible via both web and mobile interfaces, providing flexibility for gym owners managing their business and students tracking their progress and schedule.
+
+# Core Features
+
+## 1. Membership Management
+**What it does**: Enables gym owners to create and manage student profiles, custom membership plans, track belt progression, and handle multi-location operations.
+
+**Why it's important**: Effective membership management is the foundation of any gym business, allowing owners to understand their student base, tailor offerings, and track growth.
+
+**How it works**: 
+- Student profiles store personal information, membership details, rank/belt level, attendance history, and billing information
+- Custom membership plans can be created with different pricing tiers, attendance limits, and family/group discounts
+- Belt/rank progression system allows tracking promotions with timestamps and instructor notes
+- Multi-location support connects branches under a single administrative view while maintaining location-specific data
+
+## 2. Billing & Payments
+**What it does**: Processes recurring membership payments and one-time transactions like seminars or merchandise sales, handles failed payments, and provides financial reporting.
+
+**Why it's important**: Consistent and reliable billing ensures stable gym revenue, reduces administrative overhead, and improves cash flow management.
+
+**How it works**: 
+- Stripe integration handles all payment processing securely
+- Recurring billing automatically charges members based on their plan frequency
+- Failed payment handling includes automated retries and customizable notification emails
+- Student portal allows members to update payment methods and view billing history
+- Administrative dashboard provides financial reporting and revenue tracking
+
+## 3. Attendance Tracking
+**What it does**: Records and monitors student attendance at classes through various check-in methods.
+
+**Why it's important**: Attendance data helps instructors track student consistency, provides insights for class planning, and ensures membership plan compliance.
+
+**How it works**: 
+- Digital check-in system via tablet/kiosk at gym entrance using student PIN or QR code
+- Mobile app check-in option using geolocation verification
+- Instructor portal for manual attendance recording
+- Attendance history viewable by both students and administrators
+- Reporting tools to analyze attendance trends and class popularity
+
+## 4. Class Scheduling & Booking
+**What it does**: Manages gym class schedules, handles student reservations, and organizes special events.
+
+**Why it's important**: Effective scheduling optimizes facility usage, helps students plan their training, and ensures appropriate instructor-to-student ratios.
+
+**How it works**: 
+- Calendar interface for creating regular class schedules with recurring options
+- Optional booking system that can be enabled/disabled per class type
+- Capacity limits and waitlist functionality for popular classes
+- Instructor assignment and availability management
+- Special event scheduling for seminars, promotions, or competitions
+- Student notifications for schedule changes or cancellations
+
+## 5. Analytics & Reporting
+**What it does**: Provides data-driven insights on business performance, member engagement, and operational efficiency.
+
+**Why it's important**: Analytics help gym owners make informed decisions about class offerings, staffing, marketing efforts, and business growth.
+
+**How it works**: 
+- Financial dashboards track revenue, recurring payments, and outstanding balances
+- Membership reports show growth, churn, and demographic distributions
+- Attendance analytics identify popular classes, peak times, and attendance patterns
+- Custom report generation with filterable parameters (date range, location, instructor)
+- Exportable data for external analysis or accounting purposes
+
+# User Experience
+
+## User Personas
+
+### Gym Owner/Administrator
+- **Goals**: Maximize revenue, minimize administrative overhead, grow membership, maintain quality instruction
+- **Pain Points**: Manual billing, attendance tracking, membership renewals, and reporting
+- **Key Features**: Complete administrative access, financial dashboards, member management, and system configuration
+
+### Instructor
+- **Goals**: Track student progress, manage class attendance, communicate with students
+- **Pain Points**: Paper-based attendance, lack of student history, limited communication channels
+- **Key Features**: Attendance tracking, student progress monitoring, class scheduling, and student communication
+
+### Student
+- **Goals**: Stay informed about class schedules, track personal progress, manage membership easily
+- **Pain Points**: Uncertainty about schedule changes, in-person payment requirements, difficulty tracking attendance
+- **Key Features**: Class schedules, personal attendance history, belt progression tracking, and payment management
+
+## Key User Flows
+
+### Gym Owner Flow
+1. Administrative dashboard overview with key metrics upon login
+2. Member management (add, edit, view details, track progression)
+3. Financial management (billing, payment processing, reports)
+4. Schedule management (create classes, assign instructors)
+5. Reports and analytics review
+
+### Instructor Flow
+1. Class schedule view upon login
+2. Attendance taking interface for current/upcoming classes
+3. Student roster with rank and attendance information
+4. Special event scheduling and management
+
+### Student Flow
+1. Upcoming class schedule upon login
+2. Check-in functionality for attending classes
+3. Personal profile with attendance history and rank progression
+4. Membership and billing management
+5. Event registration and communication with gym staff
+
+## UI/UX Considerations
+- **Mobile-First Design**: Ensuring seamless experience on mobile devices, particularly for student check-ins and booking
+- **Role-Based Interfaces**: Tailored dashboards and navigation based on user role
+- **Accessibility**: Compliance with WCAG guidelines for inclusive access
+- **Intuitive Navigation**: Clear information hierarchy and simplified workflows
+- **Visual Indicators**: Color-coded systems for membership status, belt ranks, and scheduling
+- **Real-Time Updates**: Immediate reflection of changes to schedules, attendance, and payments
+- **Offline Support**: Basic functionality when internet connectivity is limited
+
+# Technical Architecture
+
+## System Components
+
+### Frontend
+- **Next.js Application**: Server-side rendered React application providing the primary user interface
+- **Responsive Design**: Tailwind CSS for adaptive layouts across device sizes
+- **TypeScript**: Strongly typed codebase for improved developer experience and code quality
+- **Component Library**: Custom UI components built using Headless UI and Tailwind
+- **State Management**: React Context API and SWR for data fetching and caching
+
+### Backend
+- **Supabase**: Backend-as-a-service platform providing:
+  - PostgreSQL database
+  - Authentication system
+  - Real-time subscriptions
+  - Storage for files and images
+  - Serverless functions for custom logic
+- **API Layer**: REST and RPC endpoints for data operations
+- **Webhooks**: For integrating with external services and event-driven processes
+
+### Third-Party Integrations
+- **Stripe**: Payment processing for recurring billing and one-time payments
+- **SendGrid**: Transactional emails for notifications and marketing
+- **Google/Apple Calendar**: Calendar synchronization for class schedules
+- **Analytics Services**: Usage and performance monitoring
+
+## Data Models
+
+### Core Entities
+
+#### Gyms
+```
+gyms {
+  id: UUID (PK)
+  name: String
+  logo: String (URL)
+  contact_email: String
+  contact_phone: String
+  timezone: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Locations
+```
+locations {
+  id: UUID (PK)
+  gym_id: UUID (FK to gyms)
+  name: String
+  address: String
+  city: String
+  state: String
+  postal_code: String
+  phone: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Users
+```
+users {
+  id: UUID (PK)
+  auth_id: String (from Supabase Auth)
+  email: String
+  first_name: String
+  last_name: String
+  phone: String
+  profile_image: String (URL)
+  role: Enum ('owner', 'admin', 'instructor', 'student')
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Gym_Users (Junction)
+```
+gym_users {
+  id: UUID (PK)
+  gym_id: UUID (FK to gyms)
+  user_id: UUID (FK to users)
+  role: Enum ('owner', 'admin', 'instructor', 'student')
+  active: Boolean
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Members
+```
+members {
+  id: UUID (PK)
+  user_id: UUID (FK to users)
+  gym_id: UUID (FK to gyms)
+  membership_id: UUID (FK to membership_plans) 
+  location_id: UUID (FK to locations)
+  current_rank: Enum ('white', 'blue', 'purple', 'brown', 'black')
+  current_stripes: Integer (0-4)
+  join_date: Date
+  status: Enum ('active', 'inactive', 'paused', 'cancelled')
+  check_in_code: String
+  last_attendance_date: Date
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Membership_Plans
+```
+membership_plans {
+  id: UUID (PK)
+  gym_id: UUID (FK to gyms)
+  name: String
+  description: String
+  price: Decimal
+  billing_frequency: Enum ('monthly', 'quarterly', 'annually')
+  classes_per_week: Integer (null for unlimited)
+  family_plan: Boolean
+  active: Boolean
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Billing_Records
+```
+billing_records {
+  id: UUID (PK)
+  member_id: UUID (FK to members)
+  amount: Decimal
+  status: Enum ('pending', 'paid', 'failed', 'refunded')
+  payment_date: Timestamp
+  payment_method: String
+  stripe_payment_id: String
+  description: String
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Classes
+```
+classes {
+  id: UUID (PK)
+  gym_id: UUID (FK to gyms)
+  location_id: UUID (FK to locations)
+  name: String
+  description: String
+  class_type: Enum ('fundamentals', 'advanced', 'competition', 'open_mat')
+  max_capacity: Integer
+  requires_booking: Boolean
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Class_Schedule
+```
+class_schedule {
+  id: UUID (PK)
+  class_id: UUID (FK to classes)
+  instructor_id: UUID (FK to users)
+  day_of_week: Integer (0-6)
+  start_time: Time
+  end_time: Time
+  recurring: Boolean
+  active: Boolean
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Attendance
+```
+attendance {
+  id: UUID (PK)
+  member_id: UUID (FK to members)
+  class_schedule_id: UUID (FK to class_schedule)
+  check_in_time: Timestamp
+  check_in_method: Enum ('kiosk', 'mobile', 'instructor', 'admin')
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+#### Rank_Promotions
+```
+rank_promotions {
+  id: UUID (PK)
+  member_id: UUID (FK to members)
+  promoted_by: UUID (FK to users)
+  old_rank: Enum ('white', 'blue', 'purple', 'brown', 'black')
+  old_stripes: Integer (0-4)
+  new_rank: Enum ('white', 'blue', 'purple', 'brown', 'black')
+  new_stripes: Integer (0-4)
+  promotion_date: Date
+  notes: Text
+  created_at: Timestamp
+  updated_at: Timestamp
+}
+```
+
+## APIs and Integrations
+
+### REST Endpoints
+
+#### Authentication
+- `POST /auth/signup`: Register a new user
+- `POST /auth/login`: Authenticate user
+- `POST /auth/logout`: End session
+- `POST /auth/reset-password`: Reset user password
+
+#### Gyms
+- `GET /gyms`: List gyms (for multi-gym owners)
+- `GET /gyms/:id`: Get gym details
+- `POST /gyms`: Create new gym
+- `PUT /gyms/:id`: Update gym details
+- `DELETE /gyms/:id`: Delete gym
+
+#### Members
+- `GET /members`: List members with filtering
+- `GET /members/:id`: Get member details
+- `POST /members`: Create new member
+- `PUT /members/:id`: Update member
+- `DELETE /members/:id`: Delete member
+- `POST /members/:id/pause`: Pause membership
+- `POST /members/:id/activate`: Activate membership
+- `POST /members/:id/promote`: Record rank promotion
+
+#### Billing
+- `GET /billing/invoices`: List billing records
+- `POST /billing/charge`: Process payment
+- `POST /billing/refund`: Issue refund
+- `GET /billing/reports`: Generate billing reports
+
+#### Classes
+- `GET /classes`: List classes
+- `GET /classes/:id`: Get class details
+- `POST /classes`: Create class
+- `PUT /classes/:id`: Update class
+- `DELETE /classes/:id`: Delete class
+- `GET /classes/schedule`: Get class schedule
+
+#### Attendance
+- `POST /attendance/check-in`: Record attendance
+- `GET /attendance/history`: Get attendance history
+- `GET /attendance/reports`: Generate attendance reports
+
+### RPC Functions (Supabase)
+- `get_member_stats(gym_id)`: Retrieve aggregate member statistics
+- `calculate_renewal_metrics(date_range)`: Analyze membership renewals
+- `process_failed_payments()`: Handle failed payment retry logic
+- `generate_check_in_codes(prefix)`: Create unique check-in codes
+
+### External Integrations
+
+#### Stripe
+- Webhook handling for payment events
+- Customer and subscription management
+- Payment method processing
+- Invoice generation
+
+#### Calendar APIs
+- Sync class schedules to Google/Apple calendars
+- Handle calendar event updates/cancellations
+- Process attendee responses
+
+## Infrastructure Requirements
+
+### Hosting & Deployment
+- Vercel for Next.js application hosting
+- Supabase for backend services
+- AWS S3 or similar for static asset storage
+- CI/CD pipeline via GitHub Actions
+
+### Security
+- JWT-based authentication
+- HTTPS for all communications
+- Row-level security policies in Supabase
+- PCI compliance for payment handling
+
+### Scalability
+- Serverless architecture for elastic scaling
+- Connection pooling for database access
+- Edge caching for static content
+- Rate limiting for API endpoints
+
+### Monitoring
+- Application performance monitoring
+- Error tracking and alerting
+- Database query performance analysis
+- User behavior analytics
+
+# Development Roadmap
+
+## Phase 1: MVP Foundation
+This phase focuses on building the core functionality needed for a BJJ gym to manage its basic operations.
+
+### User Authentication System
+- Implement Supabase Auth integration
+- Create user roles and permissions
+- Build profile management screens
+- Establish secure session handling
+
+### Gym & Location Management
+- Gym profile creation and settings
+- Location management for multi-location gyms
+- Basic gym information and branding
+- Access control for gym administrators
+
+### Membership Management
+- Member profiles and information storage
+- Basic membership plan configuration
+- Belt/rank tracking system
+- Member status management (active, inactive, paused)
+
+### Simplified Billing
+- Integration with Stripe for payment processing
+- Recurring billing for memberships
+- Manual payment recording
+- Basic payment history
+
+### Class Scheduling
+- Class creation and management
+- Recurring schedule setup
+- Instructor assignment
+- Basic schedule viewing for members
+
+### Attendance Tracking
+- Simple check-in system (admin-driven)
+- Attendance history recording
+- Basic attendance reporting
+- Member attendance history view
+
+## Phase 2: Enhanced Features
+This phase builds upon the foundation to provide more sophisticated features and improved user experience.
+
+### Advanced Billing & Payments
+- Failed payment handling with retry logic
+- Payment method updating by members
+- Dunning management system
+- Automated billing notifications
+- Discounts and promo code handling
+- One-time payment for events/merchandise
+
+### Self-Service Student Portal
+- Mobile-friendly student experience
+- Self-managed profile and billing information
+- Attendance history and reporting
+- Personal rank progression tracking
+- Class schedule view and notifications
+
+### Class Booking System
+- Optional reservation system for classes
+- Capacity management and waitlists
+- Cancellation policies and enforcement
+- Schedule notifications and reminders
+
+### Enhanced Attendance
+- Multiple check-in methods (kiosk, mobile, QR)
+- Automated check-in validation
+- Class-specific attendance tracking
+- Attendance vs. membership plan reconciliation
+
+### Basic Reporting
+- Member growth/churn analysis
+- Revenue reporting
+- Attendance trends
+- Rank distribution and progression
+
+## Phase 3: Advanced Analytics & Optimization
+This phase focuses on data-driven insights and advanced features for business optimization.
+
+### Comprehensive Analytics
+- Advanced financial analytics
+- Member lifecycle analysis
+- Retention risk identification
+- Class popularity and optimization
+- Instructor performance metrics
+- Custom report builder
+
+### Marketing & Communication Tools
+- Email communication system
+- Targeted messaging based on segments
+- Automated messages for milestones
+- Announcement broadcasting
+- Event promotion
+
+### Calendar Integrations
+- Google Calendar and Apple Calendar sync
+- Schedule sharing and subscription
+- Instructor availability management
+- Event notifications and updates
+
+### Advanced Multi-Location Features
+- Cross-location membership options
+- Unified reporting across locations
+- Location comparison analytics
+- Resource allocation optimization
+
+## Phase 4: Expansion & Customization
+This phase adds non-core but valuable features that enhance the platform's appeal and versatility.
+
+### Website Builder
+- Gym website templates
+- Drag-and-drop customization
+- SEO management tools
+- Class schedule integration
+- Custom domain support
+- Blog and content management
+
+### Mobile Applications
+- Native mobile apps for iOS and Android
+- Push notifications
+- Offline functionality
+- Geolocation features
+- Mobile check-in optimization
+
+### Competition & Event Management
+- Tournament registration and tracking
+- Competition team management
+- Event ticketing and payment processing
+- Results recording and sharing
+
+### Custom Branding & White-Label Options
+- Complete gym branding customization
+- White-label options for larger organizations
+- Custom email templates
+- Branded mobile experience
+
+# Logical Dependency Chain
+
+## Foundation Layer
+These components form the essential infrastructure needed before any other development can proceed:
+
+1. **User Authentication & Authorization**
+   - User registration/login
+   - Role-based permissions
+   - Session management
+
+2. **Gym & Location Setup**
+   - Gym profile creation
+   - Location management
+   - Basic settings configuration
+
+3. **Database Schema Implementation**
+   - Core entity relationships
+   - Database migrations
+   - Supabase configuration
+
+## Core Functional Layer
+These elements provide the basic operational capabilities for a gym:
+
+4. **Member Management System** (depends on 1-3)
+   - Member profiles
+   - Status management
+   - Belt/rank tracking
+
+5. **Class & Schedule Management** (depends on 1-3)
+   - Class definitions
+   - Schedule creation
+   - Instructor assignment
+
+6. **Basic Attendance Tracking** (depends on 4-5)
+   - Manual check-in capability
+   - Attendance recording
+   - Basic history viewing
+
+7. **Initial Billing Integration** (depends on 4)
+   - Stripe connection
+   - Membership plan configuration
+   - Basic payment processing
+
+## User Experience Layer
+These components make the system usable for all stakeholders:
+
+8. **Administrative Dashboard** (depends on 4-7)
+   - Overview metrics
+   - Member management interface
+   - Basic reporting
+
+9. **Instructor Portal** (depends on 5-6)
+   - Class schedule view
+   - Attendance taking interface
+   - Student information access
+
+10. **Student Self-Service Portal** (depends on 4-7)
+    - Schedule viewing
+    - Profile management
+    - Attendance history
+    - Payment management
+
+## Enhancement Layer
+These features build upon the core system to provide additional value:
+
+11. **Advanced Billing Features** (depends on 7, 10)
+    - Failed payment handling
+    - Dunning management
+    - Payment method updating
+
+12. **Class Booking System** (depends on 5, 10)
+    - Reservation capability
+    - Capacity management
+    - Waitlist functionality
+
+13. **Enhanced Attendance Options** (depends on 6, 10)
+    - Multiple check-in methods
+    - Automated validation
+    - Mobile check-in
+
+14. **Basic Analytics & Reporting** (depends on 4-7)
+    - Member metrics
+    - Financial reporting
+    - Attendance analysis
+
+## Optimization Layer
+These components optimize and extend the system's capabilities:
+
+15. **Advanced Analytics** (depends on 14)
+    - Custom reporting
+    - Predictive insights
+    - Business optimization
+
+16. **Marketing & Communication Tools** (depends on 4, 10)
+    - Email communication
+    - Targeted messaging
+    - Automated notifications
+
+17. **Calendar Integrations** (depends on 5, 12)
+    - External calendar sync
+    - Schedule sharing
+    - Event notifications
+
+18. **Website Builder & SEO Tools** (depends on 5, 16)
+    - Templated websites
+    - Content management
+    - SEO optimization
+
+# Risks and Mitigations
+
+## Technical Challenges
+
+### Risk: Real-time Synchronization Issues
+**Description**: Multi-user environments with real-time updates can encounter synchronization problems, especially for features like class booking and attendance tracking.
+
+**Mitigation**:
+- Leverage Supabase's real-time subscription capabilities
+- Implement optimistic UI updates with conflict resolution
+- Use version tracking for critical operations
+- Comprehensive testing with simulated concurrent users
+
+### Risk: Mobile Responsiveness Across Devices
+**Description**: Ensuring consistent experience across varying device sizes and capabilities, particularly for check-in functionality.
+
+**Mitigation**:
+- Mobile-first design approach
+- Component-based UI development with Tailwind
+- Device-specific testing protocol
+- Progressive enhancement strategy for features
+- Fallback mechanisms for limited capability devices
+
+### Risk: Payment Processing Security & Reliability
+**Description**: Payment handling is critical and failures impact both user experience and business revenue.
+
+**Mitigation**:
+- Delegate payment processing to Stripe's secure infrastructure
+- Implement robust error handling and logging
+- Create fallback manual payment recording options
+- Develop comprehensive retry and notification systems
+- Regular security audits of payment flows
+
+## MVP Scope Management
+
+### Risk: Feature Creep
+**Description**: The tendency to continuously add "must-have" features, delaying the MVP release.
+
+**Mitigation**:
+- Strict prioritization of features based on user value
+- Clear definition of MVP requirements from the outset
+- Feature freezes during development sprints
+- Regular stakeholder alignment on MVP scope
+- Creating a backlog for post-MVP enhancements
+
+### Risk: Over-Engineering Simple Features
+**Description**: Building complex, scalable solutions for features that could be implemented more simply for the MVP.
+
+**Mitigation**:
+- "Good enough" engineering philosophy for initial releases
+- Regular architectural reviews to identify overcomplication
+- Incremental refactoring approach
+- Focus on user outcomes rather than technical perfection
+- Time-boxing feature implementation
+
+### Risk: Dependency on Third-Party Services
+**Description**: Building core functionality that's heavily dependent on external services creates vulnerability.
+
+**Mitigation**:
+- Service abstraction layers to isolate external dependencies
+- Local fallbacks for critical features when services are unavailable
+- Comprehensive error handling for service failures
+- Regular monitoring of external service status
+- Service-level agreements with critical providers
+
+## Resource Constraints
+
+### Risk: Development Velocity vs. Quality
+**Description**: Pressure to deliver quickly may compromise code quality and create technical debt.
+
+**Mitigation**:
+- Automated testing strategy focusing on critical paths
+- Consistent code review process
+- Technical debt tracking and scheduled remediation
+- Clear definition of quality standards
+- Realistic timeline planning with quality buffers
+
+### Risk: Database Performance at Scale
+**Description**: As user base grows, database queries may become performance bottlenecks.
+
+**Mitigation**:
+- Early implementation of database indexing strategy
+- Query optimization and monitoring
+- Caching layer for frequently accessed data
+- Pagination for large data sets
+- Horizontal scaling preparation in architecture
+- Row-level security policies designed for performance
+
+### Risk: User Adoption Challenges
+**Description**: BJJ gyms may resist switching from existing systems due to data migration concerns or learning curve.
+
+**Mitigation**:
+- Develop data import tools for common competitors
+- Create comprehensive onboarding tutorials
+- Provide exceptional support during transition
+- Focus on intuitive UI/UX to minimize learning curve
+- Highlight BJJ-specific benefits unavailable in general gym software
+
+# Appendix
+
+## API Blueprint Examples
+
+### Check-in API
+```
+POST /api/attendance/check-in
+{
+  "member_id": "uuid",
+  "class_schedule_id": "uuid",
+  "check_in_method": "kiosk"
+}
+
+Response (200 OK):
+{
+  "success": true,
+  "attendance_id": "uuid",
+  "member": {
+    "name": "John Doe",
+    "rank": "blue",
+    "stripes": 2
+  },
+  "check_in_time": "2023-04-15T18:30:00Z"
+}
+```
+
+### Class Booking API
+```
+POST /api/bookings/reserve
+{
+  "member_id": "uuid",
+  "class_schedule_id": "uuid"
+}
+
+Response (200 OK):
+{
+  "success": true,
+  "booking_id": "uuid",
+  "status": "confirmed",
+  "class": {
+    "name": "Advanced No-Gi",
+    "start_time": "2023-04-16T19:00:00Z",
+    "instructor": "Coach Smith"
+  }
+}
+
+Response (409 Conflict):
+{
+  "success": false,
+  "error": "class_full",
+  "waitlist_position": 3,
+  "message": "This class is at capacity. You've been added to the waitlist."
+}
+```
+
+## UI Component Library
+
+### Core Components
+- **ButtonComponent**: Primary, secondary, danger variants with loading states
+- **FormElements**: Input, Select, Checkbox, Radio, Toggle with validation
+- **CardComponent**: Container for content with variants for different contexts
+- **TableComponent**: Data display with sorting, filtering, pagination
+- **ModalComponent**: Dialog boxes for confirmations and forms
+- **AlertComponent**: Success, warning, error, info message display
+- **BadgeComponent**: Status indicators for members, classes, payments
+- **TabComponent**: Organized content switching
+- **CalendarComponent**: Date selection and schedule display
+- **StatisticComponent**: Numerical data display with trends
+
+### Specialized Components
+- **RankDisplay**: Visual representation of BJJ belts and stripes
+- **AttendanceTracker**: Check-in interface with status indicators
+- **MembershipCard**: Displays plan details and status
+- **ClassScheduleGrid**: Weekly class view with filtering
+- **RevenueChart**: Financial data visualization
+- **CheckInButton**: Large, optimized for kiosk/tablet use
+
+## Research Findings
+
+### Competitive Analysis
+Based on reviews and feature comparisons of existing gym management software:
+
+- **Pain Points**: Generic gym software lacks BJJ-specific features (belt tracking, specific class types)
+- **Pricing Sensitivity**: BJJ gyms are price-conscious, with $99-149/month being the acceptable range
+- **Mobile Usage**: 70% of students prefer mobile access for scheduling and check-ins
+- **Integration Needs**: Calendar integration ranks highest among desired features
+- **Technical Comfort**: Varying levels of technical proficiency among gym owners requires intuitive design
+
+### User Testing Priorities
+Initial user testing should focus on:
+
+1. Check-in flow efficiency (target: <10 seconds per student)
+2. Administrative dashboard clarity (target: key metrics visible at a glance)
+3. Billing management comprehension (target: <2 minutes to understand a member's payment status)
+4. Class scheduling ease (target: <3 minutes to set up a week's schedule)
+5. Student self-service success rate (target: >90% task completion without assistance)
+
+## Technical Specifications
+
+### Performance Requirements
+- Page load time: <2 seconds for critical pages
+- API response time: <500ms for 95% of requests
+- Real-time updates: <2 second propagation
+- Concurrent users: Support for 100+ simultaneous users per gym
+- Database queries: <100ms for common operations
+
+### Security Requirements
+- Data encryption: AES-256 for sensitive data at rest
+- Authentication: Multi-factor authentication option
+- Session management: Automatic timeouts after 30 minutes of inactivity
+- Permission model: Fine-grained access controls based on role
+- Compliance: GDPR and CCPA ready
+- Audit logging: All system access and changes to sensitive data
+
+### Reliability Requirements
+- Uptime: 99.9% availability target
+- Backup: Daily database backups with 30-day retention
+- Disaster recovery: 4-hour recovery time objective
+- Data integrity: Transactional consistency for critical operations
+- Error rates: <0.1% for critical operations (payments, check-ins) 

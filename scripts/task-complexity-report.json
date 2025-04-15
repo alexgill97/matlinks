@@ -1,0 +1,331 @@
+{
+  "meta": {
+    "generatedAt": "2025-04-15T14:03:40.351Z",
+    "tasksAnalyzed": 20,
+    "thresholdScore": 5,
+    "projectName": "Your Project Name",
+    "usedResearch": false
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Project Setup",
+      "complexityScore": 5,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the Next.js project setup with TypeScript, Tailwind CSS, and Supabase integration into specific implementation steps, including configuration files, directory structure, and environment setup.",
+      "reasoning": "Medium complexity as it involves multiple technologies (Next.js, TypeScript, Tailwind, Supabase) but follows standard setup patterns. Requires careful configuration to ensure all systems work together properly."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Authentication System",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Detail the implementation steps for Supabase Auth with JWT, including user flows for sign-up, login, password reset, and role-based access control for different user types.",
+      "reasoning": "High complexity due to security implications, multiple user flows (signup, login, password reset), and role-based access control implementation. Authentication is a critical system component requiring thorough testing."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Database Schema Design",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Break down the database schema design process for a BJJ gym management system, including entity relationships, migrations, and row-level security policies for each major data component.",
+      "reasoning": "High complexity due to numerous interconnected entities (gyms, locations, users, memberships, billing, classes, attendance) with complex relationships. Requires careful planning for data integrity and security policies."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Gym & Location Management",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Detail the implementation steps for gym profile and location management functionality, including CRUD operations, admin interfaces, and multi-location support features.",
+      "reasoning": "Moderate complexity with standard CRUD operations but complicated by multi-location support requirements and the need for aggregated data views across locations."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "Membership Management",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the implementation of a BJJ-specific membership system with tiered plans, student profiles, belt/rank progression tracking, and membership status management.",
+      "reasoning": "High complexity due to multiple interrelated features: membership plans with different tiers, student profiles, rank progression tracking, and various membership statuses that affect billing and access."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Billing Integration",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Detail the implementation steps for Stripe integration with recurring payments, including API integration, webhook handling, payment history tracking, and admin financial management interfaces.",
+      "reasoning": "High complexity due to financial implications, third-party API integration (Stripe), webhook handling, and need for robust error handling and transaction recording. Financial systems require high reliability."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Class and Schedule Management",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the implementation of a BJJ-specific class and scheduling system, including class types, recurring schedules, calendar interface, instructor assignment, and special event handling.",
+      "reasoning": "High complexity due to recurring schedule patterns, calendar visualization requirements, instructor assignments, and special event handling. Time-based operations add complexity to the implementation."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Attendance Tracking System",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Detail the implementation steps for a multi-method attendance tracking system, including check-in processes, attendance history recording, instructor interfaces, and membership plan reconciliation.",
+      "reasoning": "Moderate to high complexity with multiple check-in methods, real-time tracking requirements, and the need to reconcile attendance with membership plans. Requires careful UX design for efficient check-in processes."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Administrative Dashboard",
+      "complexityScore": 8,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Break down the implementation of a comprehensive administrative dashboard for gym owners, including key metrics, member management, financial reporting, class management, and system configuration interfaces.",
+      "reasoning": "High complexity due to the integration of multiple data sources, complex reporting requirements, and the need for an intuitive interface that presents diverse information clearly. Depends on many other components."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Student Portal",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Detail the implementation steps for a student self-service portal, including dashboard, profile management, attendance tracking, payment management, and account settings.",
+      "reasoning": "Moderate complexity with standard user portal features but requires careful UX design to ensure students can easily access their information and manage their accounts without confusion."
+    },
+    {
+      "taskId": 11,
+      "taskTitle": "Instructor Portal",
+      "complexityScore": 5,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down the implementation of an instructor interface for class and student management, including dashboard, attendance taking, student roster, and special event management tools.",
+      "reasoning": "Moderate complexity focused on specific instructor needs. Requires efficient interfaces for quick attendance taking and student management during and around class times."
+    },
+    {
+      "taskId": 12,
+      "taskTitle": "Class Booking System",
+      "complexityScore": 7,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Detail the implementation steps for an optional class reservation system, including capacity management, waitlists, cancellation policies, and notification systems.",
+      "reasoning": "High complexity due to real-time booking constraints, capacity management, waitlist logic, and notification requirements. Needs to handle concurrent booking attempts and edge cases gracefully."
+    },
+    {
+      "taskId": 13,
+      "taskTitle": "Advanced Billing Features",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the implementation of advanced billing features, including failed payment handling, dunning management, automated reminders, discounts, and one-time payments.",
+      "reasoning": "High complexity due to financial implications, error handling requirements, retry logic, and various payment scenarios. Requires careful testing and edge case handling to ensure financial accuracy."
+    },
+    {
+      "taskId": 14,
+      "taskTitle": "Basic Reporting and Analytics",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Detail the implementation steps for essential business reporting features, including member analysis, revenue reporting, attendance analytics, rank tracking, and filterable report generation.",
+      "reasoning": "Moderate to high complexity due to data aggregation requirements, trend analysis, and the need for meaningful visualizations. Requires efficient database queries for potentially large datasets."
+    },
+    {
+      "taskId": 15,
+      "taskTitle": "Mobile Optimization",
+      "complexityScore": 6,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down the implementation of mobile optimization for the application, including responsive design, mobile-specific components, touch interface optimization, and offline support.",
+      "reasoning": "Moderate complexity requiring responsive design principles, mobile-specific UX considerations, and offline functionality. Needs to work across various device sizes and potentially limited connectivity."
+    },
+    {
+      "taskId": 16,
+      "taskTitle": "Advanced Analytics Dashboard",
+      "complexityScore": 9,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Detail the implementation steps for comprehensive business intelligence features, including advanced financial analytics, member lifecycle analysis, class optimization, instructor metrics, and custom report building.",
+      "reasoning": "Very high complexity due to advanced data analysis requirements, predictive features, and custom report generation capabilities. Requires sophisticated data processing and visualization techniques."
+    },
+    {
+      "taskId": 17,
+      "taskTitle": "Marketing & Communication Tools",
+      "complexityScore": 6,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the implementation of email communication and marketing tools, including list segmentation, templates, automated messages, announcements, and event promotion.",
+      "reasoning": "Moderate complexity with standard communication features but requires careful implementation of segmentation logic and automated messaging triggers based on system events and user actions."
+    },
+    {
+      "taskId": 18,
+      "taskTitle": "Calendar Integrations",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Detail the implementation steps for external calendar synchronization, including Google and Apple Calendar integration, subscription links, event notifications, and instructor availability management.",
+      "reasoning": "High complexity due to third-party API integrations, synchronization challenges, and the need to handle updates and notifications across different calendar systems with varying capabilities."
+    },
+    {
+      "taskId": 19,
+      "taskTitle": "Multi-Location Advanced Features",
+      "complexityScore": 8,
+      "recommendedSubtasks": 6,
+      "expansionPrompt": "Break down the implementation of advanced multi-location features, including cross-location memberships, unified reporting, resource allocation tools, and location-specific configurations.",
+      "reasoning": "High complexity due to data aggregation across locations, complex business rules for cross-location memberships, and the need for comparative analytics while maintaining location-specific settings."
+    },
+    {
+      "taskId": 20,
+      "taskTitle": "System Testing and Optimization",
+      "complexityScore": 9,
+      "recommendedSubtasks": 7,
+      "expansionPrompt": "Detail the implementation steps for comprehensive system testing and performance optimization, including end-to-end testing, database and API optimization, security hardening, load testing, and client-side performance improvements.",
+      "reasoning": "Very high complexity as it touches all system components and requires specialized knowledge in testing, performance optimization, security, and scalability. Critical for system reliability and user experience."
+    },
+    {
+      "taskId": "1",
+      "taskTitle": "Project Setup",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on project setup.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "2",
+      "taskTitle": "Authentication System",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on authentication system.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "3",
+      "taskTitle": "Database Schema Design",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on database schema design.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "4",
+      "taskTitle": "Gym & Location Management",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on gym & location management.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "5",
+      "taskTitle": "Membership Management",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on membership management.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "6",
+      "taskTitle": "Billing Integration",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on billing integration.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "7",
+      "taskTitle": "Class and Schedule Management",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on class and schedule management.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "8",
+      "taskTitle": "Attendance Tracking System",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on attendance tracking system.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "9",
+      "taskTitle": "Administrative Dashboard",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on administrative dashboard.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "10",
+      "taskTitle": "Student Portal",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on student portal.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "11",
+      "taskTitle": "Instructor Portal",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on instructor portal.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "12",
+      "taskTitle": "Class Booking System",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on class booking system.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "13",
+      "taskTitle": "Advanced Billing Features",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on advanced billing features.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "14",
+      "taskTitle": "Basic Reporting and Analytics",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on basic reporting and analytics.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "15",
+      "taskTitle": "Mobile Optimization",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on mobile optimization.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "16",
+      "taskTitle": "Advanced Analytics Dashboard",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on advanced analytics dashboard.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "17",
+      "taskTitle": "Marketing & Communication Tools",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on marketing & communication tools.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "18",
+      "taskTitle": "Calendar Integrations",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on calendar integrations.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "19",
+      "taskTitle": "Multi-Location Advanced Features",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on multi-location advanced features.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    },
+    {
+      "taskId": "20",
+      "taskTitle": "System Testing and Optimization",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Break down this task with a focus on system testing and optimization.",
+      "reasoning": "Automatically added due to missing analysis in API response."
+    }
+  ]
+}
