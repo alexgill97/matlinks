@@ -10,333 +10,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Core Models for Matlinks BJJ Gym Management Platform
+// Schemas will be defined during implementation based on PRD
 
-// Gym entity - represents a BJJ academy
-model Gym {
-  id          String   @id @default(uuid())
-  name        String
-  logo        String?  // URL to logo image
-  contactEmail String
-  contactPhone String?
-  timezone    String   @default("UTC")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model DunningNotification {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String    @map("user_id") @db.Uuid
+  paymentId     String    @map("payment_id") @db.Uuid
+  stage         String
+  scheduledDate DateTime  @map("scheduled_date")
+  sentDate      DateTime? @map("sent_date")
+  status        String
+  failureType   String    @map("failure_type")
+  amount        Int
+  currency      String
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @map("updated_at")
 
-  // Relations
-  locations     Location[]       // Gym can have multiple locations
-  members       Member[]         // Members associated with this gym
-  users         GymUser[]        // Users with access to this gym
-  membershipPlans MembershipPlan[] // Plans offered by this gym
-  classes       Class[]          // Classes offered by this gym
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
 
-  @@map("gyms")
+  @@index([userId])
+  @@index([paymentId])
+  @@index([status, scheduledDate])
+  @@map("dunning_notifications")
 }
 
-// Location entity - represents a physical location of a gym
-model Location {
-  id        String   @id @default(uuid())
-  gymId     String
-  name      String
-  address   String
-  city      String
-  state     String
-  postalCode String
-  phone     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model PendingSubscriptionCancellation {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  subscriptionId String    @map("subscription_id")
+  scheduledDate  DateTime  @map("scheduled_date")
+  paymentId      String    @map("payment_id") @db.Uuid
+  processed      Boolean   @default(false)
+  processedDate  DateTime? @map("processed_date")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @map("updated_at")
 
-  // Relations
-  gym       Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  members   Member[] // Members who primarily train at this location
-  classes   Class[]  // Classes held at this location
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
 
-  @@map("locations")
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([processed, scheduledDate])
+  @@map("pending_subscription_cancellations")
 }
 
-// User entity - core user information
-model User {
-  id          String   @id @default(uuid())
-  authId      String   @unique // Reference to Supabase Auth user
-  email       String   @unique
-  firstName   String
-  lastName    String
-  phone       String?
-  profileImage String?  // URL to profile image
-  role        UserRole @default(STUDENT)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model SubscriptionCancellation {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  subscriptionId String    @map("subscription_id")
+  reason         String?
+  canceledAt     DateTime  @map("canceled_at")
+  effectiveDate  DateTime? @map("effective_date")
+  immediate      Boolean   @default(false)
+  createdAt      DateTime  @default(now()) @map("created_at")
 
-  // Relations
-  gyms        GymUser[]     // Gyms this user has access to
-  member      Member?       // If the user is a student, their member profile
-  instructor  Instructor?   // If the user is an instructor, their instructor profile
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("users")
-}
-
-// Enum for user roles
-enum UserRole {
-  OWNER
-  ADMIN
-  INSTRUCTOR
-  STUDENT
-}
-
-// Junction table for Gym and User
-model GymUser {
-  id        String   @id @default(uuid())
-  gymId     String
-  userId    String
-  role      UserRole
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  gym       Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([gymId, userId])
-  @@map("gym_users")
-}
-
-// Member entity - represents a student at a gym
-model Member {
-  id               String       @id @default(uuid())
-  userId           String       @unique
-  gymId            String
-  membershipPlanId String?
-  locationId       String?
-  currentRank      BjjRank      @default(WHITE)
-  currentStripes   Int          @default(0) // 0-4 stripes
-  joinDate         DateTime     @default(now())
-  status           MemberStatus @default(ACTIVE)
-  checkInCode      String       @unique // Code used for check-ins
-  lastAttendanceDate DateTime?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-
-  // Relations
-  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  gym             Gym              @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  membershipPlan  MembershipPlan?  @relation(fields: [membershipPlanId], references: [id])
-  location        Location?        @relation(fields: [locationId], references: [id])
-  billingRecords  BillingRecord[]  // Payment history
-  attendance      Attendance[]     // Attendance records
-  bookings        ClassBooking[]   // Class bookings
-  rankPromotions  RankPromotion[]  // Rank promotion history
-
-  @@map("members")
-}
-
-// Instructor entity - represents an instructor at a gym
-model Instructor {
-  id          String   @id @default(uuid())
-  userId      String   @unique
-  bio         String?
-  specialties String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  classSchedules ClassSchedule[] // Classes this instructor teaches
-
-  @@map("instructors")
-}
-
-// Enum for BJJ ranks
-enum BjjRank {
-  WHITE
-  BLUE
-  PURPLE
-  BROWN
-  BLACK
-}
-
-// Enum for member status
-enum MemberStatus {
-  ACTIVE
-  INACTIVE
-  PAUSED
-  CANCELLED
-}
-
-// Membership Plan entity - defines subscription options
-model MembershipPlan {
-  id               String   @id @default(uuid())
-  gymId            String
-  name             String
-  description      String?
-  price            Decimal  @db.Decimal(10, 2)
-  billingFrequency BillingFrequency
-  classesPerWeek   Int?     // null means unlimited
-  familyPlan       Boolean  @default(false)
-  active           Boolean  @default(true)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  // Relations
-  gym      Gym      @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  members  Member[] // Members subscribed to this plan
-
-  @@map("membership_plans")
-}
-
-// Enum for billing frequency
-enum BillingFrequency {
-  MONTHLY
-  QUARTERLY
-  ANNUALLY
-}
-
-// Billing Record entity - represents a payment transaction
-model BillingRecord {
-  id               String        @id @default(uuid())
-  memberId         String
-  amount           Decimal       @db.Decimal(10, 2)
-  status           PaymentStatus
-  paymentDate      DateTime?
-  paymentMethod    String?
-  stripePaymentId  String?
-  description      String?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-
-  // Relations
-  member    Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
-
-  @@map("billing_records")
-}
-
-// Enum for payment status
-enum PaymentStatus {
-  PENDING
-  PAID
-  FAILED
-  REFUNDED
-}
-
-// Class entity - represents a type of class offered
-model Class {
-  id           String     @id @default(uuid())
-  gymId        String
-  locationId   String
-  name         String
-  description  String?
-  classType    ClassType
-  maxCapacity  Int?
-  requiresBooking Boolean  @default(false)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-
-  // Relations
-  gym            Gym             @relation(fields: [gymId], references: [id], onDelete: Cascade)
-  location       Location        @relation(fields: [locationId], references: [id], onDelete: Cascade)
-  schedules      ClassSchedule[] // Schedule instances of this class
-
-  @@map("classes")
-}
-
-// Enum for class types
-enum ClassType {
-  FUNDAMENTALS
-  ADVANCED
-  COMPETITION
-  OPEN_MAT
-  SEMINAR
-  SPECIAL_EVENT
-}
-
-// Class Schedule entity - represents a scheduled class instance
-model ClassSchedule {
-  id           String   @id @default(uuid())
-  classId      String
-  instructorId String?
-  dayOfWeek    Int?     // 0-6 for recurring classes (null for one-time events)
-  startTime    DateTime
-  endTime      DateTime
-  recurring    Boolean  @default(true)
-  active       Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  // Relations
-  class        Class         @relation(fields: [classId], references: [id], onDelete: Cascade)
-  instructor   Instructor?   @relation(fields: [instructorId], references: [id])
-  attendance   Attendance[]  // Attendance records for this class
-  bookings     ClassBooking[] // Bookings for this class
-
-  @@map("class_schedules")
-}
-
-// Attendance entity - records member attendance
-model Attendance {
-  id               String       @id @default(uuid())
-  memberId         String
-  classScheduleId  String
-  checkInTime      DateTime     @default(now())
-  checkInMethod    CheckInMethod
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-
-  // Relations
-  member         Member         @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  classSchedule  ClassSchedule  @relation(fields: [classScheduleId], references: [id], onDelete: Cascade)
-
-  @@map("attendance")
-}
-
-// Enum for check-in methods
-enum CheckInMethod {
-  KIOSK
-  MOBILE
-  INSTRUCTOR
-  ADMIN
-}
-
-// Class Booking entity - for class reservations
-model ClassBooking {
-  id              String         @id @default(uuid())
-  memberId        String
-  classScheduleId String
-  status          BookingStatus  @default(CONFIRMED)
-  waitlistPosition Int?          // Position in waitlist if applicable
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-
-  // Relations
-  member        Member          @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  classSchedule ClassSchedule   @relation(fields: [classScheduleId], references: [id], onDelete: Cascade)
-
-  @@map("class_bookings")
-}
-
-// Enum for booking status
-enum BookingStatus {
-  CONFIRMED
-  WAITLISTED
-  CANCELLED
-  ATTENDED
-}
-
-// Rank Promotion entity - tracks belt/stripe promotions
-model RankPromotion {
-  id            String   @id @default(uuid())
-  memberId      String
-  promotedById  String   // User ID of the instructor who promoted
-  oldRank       BjjRank
-  oldStripes    Int
-  newRank       BjjRank
-  newStripes    Int
-  promotionDate DateTime @default(now())
-  notes         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  // Relations
-  member        Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
-
-  @@map("rank_promotions")
+  @@index([userId])
+  @@index([subscriptionId])
+  @@map("subscription_cancellations")
 }
